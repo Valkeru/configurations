@@ -1,0 +1,27 @@
+[Unit]
+Description=Kodi via Hyprland (Wayland)
+After=remote-fs.target systemd-user-sessions.service network-online.target polkit.service upower.service
+Wants=network-online.target polkit.service upower.service
+Conflicts=getty@tty1.service
+
+[Service]
+User=valheru
+Group=valheru
+PAMName=login
+#Environment=XDG_RUNTIME_DIR=/run/user/1000
+# Переменная, чтобы Hyprland не падал при старте без сессии
+#Environment=XDG_SESSION_TYPE=wayland
+
+# Запуск Hyprland с указанием нашего конфига
+#ExecStart=/usr/bin/hyprland --config /etc/kodi/hyprland-kodi.conf
+ExecStart=/usr/bin/start-hyprland 
+
+Restart=always
+RestartSec=3
+
+StandardInput=tty
+StandardOutput=journal
+TTYPath=/dev/tty1
+
+[Install]
+WantedBy=multi-user.target
